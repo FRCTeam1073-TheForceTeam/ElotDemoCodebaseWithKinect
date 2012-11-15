@@ -15,14 +15,11 @@ void Robot1073::Autonomous(void)
 	matchTimer->StartAutonomous();
 	navigation->SetStartPosition();
 	navigation->Start();
-	//pincer->Close();
-	retroIlluminator->Set(1.0);
-
+	
 	while (IsAutonomous())
 	{
-		// Service the Kraken, elevator, arm, pincer, etc.
-		DoPeriodicServiceFunctions();
-		Wait(WaitTime);				// wait for a motor update time
+		puts("Logomotion Autonomous is Nonexistant in Elot's Demo Mode...");
+		break;
 	}
 	kraken->StopAll();
 }
