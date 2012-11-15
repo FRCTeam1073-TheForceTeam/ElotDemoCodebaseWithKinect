@@ -17,8 +17,11 @@ Robot1073::Robot1073(void)
 	
 	puts("Welcome to Elot's Demo Mode! Kinect Support is Included and Can be Run via the Dashboard");
 	
+	//Didn't remove references alltogether because it might be nice to demo a camera stream, chances are we'll never get a Camera back on this robot though...
+	/*
 	cameraManager = new CameraManager();
 	camera = &AxisCamera::GetInstance();
+	*/
 	
 	driverStation = DriverStation::GetInstance();
 	
@@ -64,6 +67,7 @@ Robot1073::Robot1073(void)
 	
 	gyro = new SmartGyro(ANALOG_GyroPort);
 	gyro->Reset();
+	
 	
 	cameraServo = new Servo(PWM_ChassisCamera);
 	cameraServo->Set(initialCameraServoPosition);
