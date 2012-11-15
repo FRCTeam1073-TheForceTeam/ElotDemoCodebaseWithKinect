@@ -8,7 +8,6 @@
 ///////////////////////////////////////////////////////////
 #include "Robot1073.h"
 
-bool IsSpareChassis = false;
 const float initialCameraServoPosition = .60f;
 
 Robot1073::Robot1073(void)
@@ -156,8 +155,7 @@ void Robot1073::DoPeriodicServiceFunctions()
 		if(IsOperatorControl())
 			drive->PeriodicService();	// Drive Only in tele mode..
 		
-		if(!IsSpareChassis)				// Call All of these periodic service functions..
-		{
+		
 			elevator->PeriodicService();
 			//arm->PeriodicService();  
 			//pincer->PeriodicService();
@@ -170,7 +168,7 @@ void Robot1073::DoPeriodicServiceFunctions()
 		
 #endif
 
-		}
+		
 
 
 }
