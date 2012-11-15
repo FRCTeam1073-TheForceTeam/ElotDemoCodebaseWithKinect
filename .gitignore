@@ -1,6 +1,11 @@
+#windriver
+Makefile
+
+
 #################
 ## Eclipse
 #################
+
 
 *.pydevproject
 .project
