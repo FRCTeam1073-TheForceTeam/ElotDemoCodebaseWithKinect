@@ -1,8 +1,3 @@
-/*MEETING NOTES: 2/5/2011 SOFTWARE, MECH, ELEC
-	>Turn Analog IO for Accelerometers to Dig IO.
-	>don't but extra strain on motors... basixally dont use to support anything
-	>
-	*/
 #ifndef USERINCLUDES_H_
 #define USERINCLUDES_H_
 
