@@ -46,10 +46,10 @@ DashboardSender::SendData(Robot1073 *p)
 	else if(p->IsAutonomous()){packData += 16;}
 	else {packData += 24;}
 	if(false){packData += 32;} // has line
-	//if(p->arm->IsUpLimitSwitchActive()){packData += 64;}
-	//if(p->arm->IsDownLimitSwitchActive()){packData += 128;}
-	//if(p->pincer->IsClosedLimitSwitchActive()){packData += 256;}
-	//if(p->pincer->IsOpenLimitSwitchActive()){packData += 512;}
+	if(p->arm->IsUpLimitSwitchActive()){packData += 64;}
+	if(p->arm->IsDownLimitSwitchActive()){packData += 128;}
+	if(p->pincer->IsClosedLimitSwitchActive()){packData += 256;}
+	if(p->pincer->IsOpenLimitSwitchActive()){packData += 512;}
 	
 	if(p->leftLineSensor->Get()){ packData += 1024; }
 	if(p->middleLineSensor->Get()){packData += 2048;  }
@@ -109,8 +109,8 @@ DashboardSender::SendData(Robot1073 *p)
 	//+++++++++++++++++++++++
 	dash.AddFloat((float)p->leftMotorJaguar->GetOutputCurrent());
 	dash.AddFloat((float)p->rightMotorJaguar->GetOutputCurrent());
-	//dash.AddFloat((float)p->pincerJaguar->GetOutputCurrent());
-	//dash.AddFloat((float)p->armJaguar->GetOutputCurrent());
+	dash.AddFloat((float)p->pincerJaguar->GetOutputCurrent());
+	dash.AddFloat((float)p->armJaguar->GetOutputCurrent());
 	dash.AddFloat((float)p->elevatorJaguarMotorA->GetOutputCurrent());
 
 	dash.AddFloat(35); // pincher % open
@@ -129,8 +129,7 @@ DashboardSender::SendData(Robot1073 *p)
 	dash.AddFloat(p->navigation->GetDistanceToPeg(x));
 	dash.AddFloat(p->navigation->GetDistanceToBait(x));
 	
-	//dash.AddFloat(p->magEncoder->GetVoltage());
-	dash.AddFloat(0);
+	dash.AddFloat(p->magEncoder->GetVoltage());
 	// dash.AddFloat(p->arm->magEncoder->GetVoltage());
 	dash.AddFloat(42.0);
 

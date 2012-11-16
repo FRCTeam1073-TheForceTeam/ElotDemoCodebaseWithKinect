@@ -261,14 +261,14 @@ void Pincer::CheckButtons()
 
 #endif
 		
-		//static bool wasRollerInButton = false;
-		//static bool wasRollerOutButton = false;
+		static bool wasRollerInButton = false;
+		static bool wasRollerOutButton = false;
 
-		//bool isRollerInButton = operatorJoystick->GetRawButton(GripRollerInButton);
-		//bool isRollerOutButton = operatorJoystick->GetRawButton(GripRollerOutButton);
+		bool isRollerInButton = operatorJoystick->GetRawButton(GripRollerInButton);
+		bool isRollerOutButton = operatorJoystick->GetRawButton(GripRollerOutButton);
 
 
-		/*if(isRollerInButton){
+		if(isRollerInButton){
 			RollIn();
 		}
 		else if (isRollerOutButton){
@@ -276,13 +276,13 @@ void Pincer::CheckButtons()
 		}
 		else{
 			if(wasRollerInButton || wasRollerOutButton){
-				RollOff();*/
+				RollOff();
 #if SIMULATOR
 //				printf("Roller: Roller OFF\n");
 #endif
-			//}	
+			}	
 
-		//}
-		//wasRollerInButton = isRollerInButton;
-		//wasRollerOutButton = isRollerOutButton;
+		}
+		wasRollerInButton = isRollerInButton;
+		wasRollerOutButton = isRollerOutButton;
 }

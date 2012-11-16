@@ -36,9 +36,6 @@ class LNDrive
 		void StopDriveToPeg();
 		void DisablePID();		
 		void UpdateTargetPole(int xValue) { targetPole = xValue; }
-		
-		void StartDanceSpin();
-		void StopDanceSpin();
 
 #ifdef  _MSC_VER
 	void SimulationHack();

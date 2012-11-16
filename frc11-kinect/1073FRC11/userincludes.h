@@ -143,11 +143,9 @@ extern bool IsSpareChassis;  // Used to differentiate MainRobot from SpareChassi
 	//static const int CameraSwitchButton = 2;
 	static const int GoToPositionButton = 1;
 	static const int ElevatorToGroundButton = 2;
-	//static const int GripRollerOutButton = 3;
-	static const int backspinShootButton = 3; //changed for shooter prototyping
+	static const int GripRollerOutButton = 3;
 	static const int ArmDownButton = 4;
-	//static const int GripRollerInButton = 5;
-	static const int normalShootButton = 5; //changed for shooter prototyping
+	static const int GripRollerInButton = 5;
 	static const int ArmUpButton = 6;
 	static const int MinibotFirstStageDeployButton = 7;
 	static const int MinibotSecondStageDeployButton = 8;
@@ -171,7 +169,6 @@ extern bool IsSpareChassis;  // Used to differentiate MainRobot from SpareChassi
 	static const UINT16 ElevatorPulsesPerFoot = 283;
 	static const float nonsensicalAddition = 420;
 	static const UINT16 DriveWheelPulsesPerFoot = 600; // found through experimentation
-	static const float GettingDownSpeed = 0.25f;//awww yeahhh
 	
 
 #define sizeof_array(ARRAY) (sizeof(ARRAY)/sizeof(ARRAY[0])) 

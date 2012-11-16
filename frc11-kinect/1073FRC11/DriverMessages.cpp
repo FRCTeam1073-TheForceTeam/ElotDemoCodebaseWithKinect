@@ -60,14 +60,14 @@ void DriverMessages::PeriodicService(Robot1073 *p1073)
 				PrintIt(1, "YVelocity: %f", p1073->navigation->GetYVelocity());
 				break;
 				
-	case 6:		/*PrintIt(0, "Pincer encoder %3.5f", p1073->magPincerEncoder->GetVoltage());
+	case 6:		PrintIt(0, "Pincer encoder %3.5f", p1073->magPincerEncoder->GetVoltage());
 				PrintIt(1, "Close: %s", p1073->pincer->IsClosedLimitSwitchActive()? "pushed" : "not pushed");
-				PrintIt(2, "Open: %s",  p1073->pincer->IsOpenLimitSwitchActive() ? "pushed" : "not pushed");*/
+				PrintIt(2, "Open: %s",  p1073->pincer->IsOpenLimitSwitchActive() ? "pushed" : "not pushed");
 				break;
 	
-	case 7:		/*PrintIt(0, "Arm limits");
+	case 7:		PrintIt(0, "Arm limits");
 				PrintIt(1, "Up: %s", p1073->arm->IsUpLimitSwitchActive()? "pushed" : "not pushed");
-				PrintIt(2, "Down: %s",  p1073->arm->IsDownLimitSwitchActive()? "pushed" : "not pushed");*/
+				PrintIt(2, "Down: %s",  p1073->arm->IsDownLimitSwitchActive()? "pushed" : "not pushed");
 				break;
 				
 	case 8:
@@ -130,19 +130,8 @@ void DriverMessages::PeriodicService(Robot1073 *p1073)
 
 				}
 				break;
-	case 13:
-				{
-					float fTSpeed = p1073->topShooterMotorJaguar->GetSpeed();
-					float fBSpeed = p1073->bottomShooterMotorJaguar->GetSpeed();
-					float fTPos = p1073->topShooterMotorJaguar->GetPosition();
-					float fBPos = p1073->bottomShooterMotorJaguar->GetPosition();
-					float fTMin = p1073->shooter->GetTopMinimumSpeed();
-					float fBMin = p1073->shooter->GetBottomMinimumSpeed();
-					PrintIt(0,"Spe-T: %0.0f, B: %0.0f", fTSpeed, fBSpeed);
-					PrintIt(1,"Pos-T: %0.0f, B: %0.0f", fTPos, fBPos);
-					PrintIt(2,"Min-T %0.0f, B: %0.0f", fTMin, fBMin);
-					break;
-				}
+			
+
 	default:	displayIndex = 0;
 				break;
 	}

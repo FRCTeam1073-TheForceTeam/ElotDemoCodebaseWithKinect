@@ -20,8 +20,6 @@ KrakenDrive::KrakenDrive(Robot1073 *p)
 	targetPole = 2;
 	targetFoot = 3;
 	isAutoReleaseButtonHeld = false;
-	isGettingDown = false; // awww
-	wasGettingDown = false;
 }
 
 void KrakenDrive::StopAll()
@@ -37,31 +35,17 @@ void KrakenDrive::PeriodicService()
 	bool isDriveToPegButtonHeld = robot->leftJoystick->GetRawButton(DriveToPegButton);
 	//bool isTurnToRackButtonHeld = robot->leftJoystick->GetRawButton(TurnToRackButton);
 	//bool isAutoReleaseButtonHeld = robot->rightJoystick->GetRawButton(AutoReleaseButton);
-	bool isDanceButtonHeld = robot->rightJoystick->GetRawButton(11);
 
 	static bool wasKrakenButtonHeld = false;
 	static bool wasDriveToPegButtonHeld = false;
 	//static bool wasTurnToRackButtonHeld = false;
 	static bool wasAutoReleaseButtonHeld = false;
 	static bool SetStartAutonomous = false;
-	static bool wasDanceButtonHeld = false;
 	
 	float backDistance = 0.0f;
 	float nextDistance = 0.0f;
 	float nextAngle = 0.0;
-	
-	if( isDanceButtonHeld && !wasDanceButtonHeld)
-	{
-		SetGettingDown(true); 
-		printf("Starting GettingDown");
-	}
-	else if( !isDanceButtonHeld && wasDanceButtonHeld)
-	{
-		SetGettingDown(false);
-		printf("Stopping GettingDown");
-	}
-	
-	
+
 	if(ChooseToLineFollow && !SetStartAutonomous && robot->IsAutonomous())
 	{
 		printf("Kraken: Decided to line follow.\n");
@@ -82,21 +66,6 @@ void KrakenDrive::PeriodicService()
 	else if (isAutoReleaseButtonHeld && !wasAutoReleaseButtonHeld)
 	{
 		theKrakenDrive = AutoRelease;
-	}
-	else if( isGettingDown == true && wasGettingDown == false )
-	{
-		//start dance here
-		theKrakenDrive = SpinDanceMove;
-	}
-	else if( isGettingDown == false && wasGettingDown == true )
-	{
-		//stop dance
-		theKrakenDrive = StopDanceMove;
-	}
-	else if( isGettingDown == true && wasGettingDown == true )
-	{
-		//keep getting down
-		//deliberitlly don't stop everything (see below)
 	}
 	else if (!(isKrakenButtonHeld || isDriveToPegButtonHeld || robot->IsAutonomous() || theKrakenDrive == IdleMode))
 	{
@@ -184,19 +153,9 @@ void KrakenDrive::PeriodicService()
 			}
 		}									
 		break;
-	case SpinDanceMove:
-		
-		robot->drive->StartDanceSpin();
-		
-		break;
-	case StopDanceMove:
-		
-		robot->drive->StopDanceSpin();
-		
-		break;
-		
+
 	// JFH This function is probably the AUTO Release sequence...
-	/*case AutoRelease:
+	case AutoRelease:
 			printf("Kraken: AutoRelease\n");
 			robot->arm->GoToReleasePosition();
 			theKrakenDrive = OpenPincer;	// JFH  Jon Could. possibly should, consolidate
@@ -220,7 +179,7 @@ void KrakenDrive::PeriodicService()
 			robot->elevator->DropDownHalfAPeg();
 			theKrakenDrive = BackUp;
 		}
-		break;*/
+		break;
 
 	case BackUp:  // JFH Backup ?  Should probably be absolute move ?
 		if(robot->elevator->IsAtTargetPosition())
@@ -245,9 +204,9 @@ void KrakenDrive::PeriodicService()
 		if(robot->elevator->IsAtTargetPosition())
 		{
 			printf("Turning Around\n");
-			/*robot->pincer->Close();
+			robot->pincer->Close();
 			robot->pincer->RollOff();
-			robot->arm->GoToUpPosition();*/
+			robot->arm->GoToUpPosition();
 			robot->drive->StartTurnToAngle(robot->navigation->GetHeadingToPeg(targetPole) + 180.0);
 			theKrakenDrive = DriveBack;
 		}
@@ -271,10 +230,8 @@ void KrakenDrive::PeriodicService()
 
 	case StopEverything:
 		robot->drive->DisablePID();
-		printf("STOPPING EVERYTHING" );
 		
 		theKrakenDrive = IdleMode;
-		
 		break;
 	
 	case LineFollow1:
@@ -342,7 +299,6 @@ void KrakenDrive::PeriodicService()
 	wasKrakenButtonHeld = isKrakenButtonHeld;
 	wasDriveToPegButtonHeld = isDriveToPegButtonHeld;
 	wasAutoReleaseButtonHeld = isAutoReleaseButtonHeld;
-	wasDanceButtonHeld = isDanceButtonHeld;
 }
 
 

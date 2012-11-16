@@ -26,7 +26,7 @@ public:
 	enum TheKrakenDrive { TurnToBait, DriveToBait, TurnToPeg, RaiseElevator, DriveToPeg, WaitForPeg, 
 		AutoRelease, DropTheArm ,OpenPincer, DropOffTube, BackUp, DropElevator, TurnAround, DriveBack, TheLastWait,
 		/*TurnAndDrive, TurnDriveDrop, ReleasePincer, DriveBack,*/ 
-		LineFollow1, LineFollow2, StopEverything, IdleMode, SpinDanceMove, StopDanceMove };
+		LineFollow1, LineFollow2, StopEverything, IdleMode };
 	void PeriodicService();
 	TheKrakenDrive GetMode() { return theKrakenDrive; }
 	void StopAll();
@@ -36,8 +36,6 @@ public:
 
 	void SetAutoReleaseButton(bool button) { isAutoReleaseButtonHeld = button; }
 	
-	void SetGettingDown(bool state) { isGettingDown = state; }
-	
 private:
 	TheKrakenDrive theKrakenDrive;
 	Robot1073 *robot;
@@ -45,9 +43,6 @@ private:
 	bool isAutoReleaseButtonHeld;
     int targetPole;
     int targetFoot;
-    
-    bool isGettingDown;
-    bool wasGettingDown;
 };
 
 #endif

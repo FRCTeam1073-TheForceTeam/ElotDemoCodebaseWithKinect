@@ -413,16 +413,6 @@ void LNDrive::DisablePID()
 	angleDrive->Enable(false); 
 }
 
-void LNDrive::StartDanceSpin()
-{
-	Override( GettingDownSpeed, -GettingDownSpeed);
-}
-
-void LNDrive::StopDanceSpin()
-{
-	StopOverride();
-}
-
 #ifdef  _MSC_VER
 void 
 LNDrive::SimulationHack()
