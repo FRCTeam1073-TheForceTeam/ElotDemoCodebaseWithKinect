@@ -15,11 +15,9 @@
 #include "arm.h"
 #include "elevator.h"
 #include "SmartJagMotor.h"
-#include "SmartSpeedCANJaguar.h"
 #include "SmartGyro.h" 
 #include "KrakenDrive.h"
 #include "MatchTimer.h"
-#include "Shooter.h"
 //////////////////////////////////////////////////////////
 // Filename: Robot1073.h
 // Author:    
@@ -62,16 +60,15 @@ class Robot1073: public SimpleRobot
 		friend class KrakenDrive; 	   // Needs a ton of classes
 
 		
+		DigitalInput *isSpareChassisJumper; // Jumper to determine whether SW is executing on MainBot or Spare Chasis  
 		AxisCamera *camera;          
 		DriverStation *driverStation;
 		
 		// Pointers for each of 6 Jaguar Motors
 		SmartJaguarMotorEncoder *leftMotorJaguar;
 		SmartJaguarMotorEncoder *rightMotorJaguar;
-		SmartSpeedCANJaguar *topShooterMotorJaguar;	//changed for shooter prototype
-		SmartSpeedCANJaguar *bottomShooterMotorJaguar;	//see above
-		//SmartJaguarMotorEncoder *pincerJaguar;
-		//SmartJaguarMotorEncoder *armJaguar;
+		SmartJaguarMotorEncoder *pincerJaguar;
+		SmartJaguarMotorEncoder *armJaguar;
 		SmartJaguarMotorEncoder *elevatorJaguarMotorA;
 		
 		SmartJoystick *leftJoystick;
@@ -80,8 +77,8 @@ class Robot1073: public SimpleRobot
 		Encoders1073 *encoders;
 		
 		Relay *rollerRelay;
-		//AnalogChannel *magEncoder;
-		//AnalogChannel *magPincerEncoder;
+		AnalogChannel *magEncoder;
+		AnalogChannel *magPincerEncoder;
 		
 		SmartGyro *gyro;
 		Servo *elevatorBrakeServo;
@@ -100,9 +97,8 @@ class Robot1073: public SimpleRobot
 		DigitalInput *middleLineSensor;
 		DigitalInput *rightLineSensor;
 		LineFollower *lineFollower;
-		Shooter *shooter;
-		//Pincer *pincer;
-		//Arm *arm;
+		Pincer *pincer;
+		Arm *arm;
 		Elevator *elevator;
 		KrakenDrive *kraken;
 		DigitalOutput *scopeLoop;
