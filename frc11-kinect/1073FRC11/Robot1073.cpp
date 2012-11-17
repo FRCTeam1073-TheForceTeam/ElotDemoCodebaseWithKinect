@@ -8,31 +8,25 @@
 ///////////////////////////////////////////////////////////
 #include "Robot1073.h"
 
-bool IsSpareChassis = false;
 const float initialCameraServoPosition = .60f;
 
 Robot1073::Robot1073(void)
 : targetPole(2),targetFoot(3)
 {	
-	printf("FIRST Team 1073 Drivable Baselevel 1\n");
+	std::cout <<"\n\n\n";
+	for(int i = 0; i < 50; i++) std::cout<< "==";
+	std::cout << "Welcome to Elot's Demo Mode!\n\n";
+	std::cout <<"\tThis version of the code is lightwieght and optimized for "
+			<< "heavy use in non-competitive environments. It gives users:\n"
+			<< "\t>A Complete teleoperated mode\n"
+			<< "\t>Kinect Support with KinectGestureLib that is integrated into "
+			<< "the project's dashboard\n"
+			<< "\t>No autonomous to avoid crashes and confusion.\n\n";
 	
 	
-	isSpareChassisJumper = new DigitalInput(DIO_SpareChasisJumper);
-	IsSpareChassis = !isSpareChassisJumper->Get();
+	cameraManager = NULL;
+	camera = NULL;
 	
-	printf("Robot is %s\n", IsSpareChassis ? "Spare Chassis" : "Elot" );
-	
-	//For now, Elot does not have camera(s)
-	if (IsSpareChassis)
-	{
-		cameraManager = new CameraManager();
-		camera = &AxisCamera::GetInstance();
-	}
-	else
-	{
-		cameraManager = NULL;
-		camera = NULL;
-	}
 
 	driverStation = DriverStation::GetInstance();
 	
@@ -43,35 +37,23 @@ Robot1073::Robot1073(void)
 	matchTimer = new MatchTimer();
 	
 
-	if(IsSpareChassis){  // Local Instantiation keeping UserIncludes Clean.  Should move spare chassis jags...
-		leftMotorJaguar = new SmartJaguarMotorEncoder(3,  DriveWheelPulsesPerFoot, IsLeftMotorReversed, IsLeftEncoderReversed);
-		rightMotorJaguar = new SmartJaguarMotorEncoder(5, DriveWheelPulsesPerFoot, IsRightMotorReversed, IsRightEncoderReversed);
-	}
-	else{   // main Robot Instantiations from UserIncludes
-		leftMotorJaguar = new SmartJaguarMotorEncoder(CAN_LeftMotorAddress, DriveWheelPulsesPerFoot, IsLeftMotorReversed, IsLeftEncoderReversed);
-		rightMotorJaguar = new SmartJaguarMotorEncoder(CAN_RightMotorAddress, DriveWheelPulsesPerFoot, IsRightMotorReversed, IsRightEncoderReversed);
-	}
+	// main Robot Instantiations from UserIncludes
+	leftMotorJaguar = new SmartJaguarMotorEncoder(CAN_LeftMotorAddress, DriveWheelPulsesPerFoot, IsLeftMotorReversed, IsLeftEncoderReversed);
+	rightMotorJaguar = new SmartJaguarMotorEncoder(CAN_RightMotorAddress, DriveWheelPulsesPerFoot, IsRightMotorReversed, IsRightEncoderReversed);
+	
 	
 	// Reset the encoders on the drive train Jags
 	leftMotorJaguar->ResetEncoder();
 	rightMotorJaguar->ResetEncoder();
 	
-	// Until we have a base with these motors configured, cannot create the Jag objects.  The robot
-	// loops returning error -52007 (NI Platform Services: The operation did not return in time).  ;
+	pincerJaguar = new SmartJaguarMotorEncoder(CAN_PincerMotorAddress, 0, IsPincerMotorReversed);
+	armJaguar = new SmartJaguarMotorEncoder(CAN_ElevatorArmMotorAddress, 0, IsArmMotorReversed);
 	
-	// Can't new up Jags if they don't exist.  Null the pointes on SpareChassis or else we are on MainBOT
-	if(IsSpareChassis){
-		pincerJaguar = armJaguar  = elevatorJaguarMotorA = NULL;
-	}
-	else{
-		pincerJaguar = new SmartJaguarMotorEncoder(CAN_PincerMotorAddress, 0, IsPincerMotorReversed);
-		armJaguar = new SmartJaguarMotorEncoder(CAN_ElevatorArmMotorAddress, 0, IsArmMotorReversed);
-		
-		elevatorJaguarMotorA = new SmartJaguarMotorEncoder(CAN_ElevatorUpDownAMotorAddress, ElevatorPulsesPerFoot, false, true);
-		
-		// Only the "A" motor has an optical encoder
-		elevatorJaguarMotorA->ResetEncoder();
-	}
+	elevatorJaguarMotorA = new SmartJaguarMotorEncoder(CAN_ElevatorUpDownAMotorAddress, ElevatorPulsesPerFoot, false, true);
+	
+	// Only the "A" motor has an optical encoder
+	elevatorJaguarMotorA->ResetEncoder();
+
 	
 	retroIlluminator = new Victor(PWM_RetroIlluminator);
 	rollerRelay = new Relay(RELAY_PincerRoller);
@@ -100,18 +82,9 @@ Robot1073::Robot1073(void)
 	
 	encoders = new Encoders1073(gyro, leftMotorJaguar, rightMotorJaguar);
 	
-	
-	if(!IsSpareChassis){
-		pincer = new Pincer(pincerJaguar, rollerRelay, magPincerEncoder, operatorJoystick);
-		elevator = new Elevator(elevatorJaguarMotorA, elevatorBrakeServo, operatorJoystick);
-		arm = new Arm(armJaguar, operatorJoystick, magEncoder);
-	}
-	else
-	{
-		pincer = NULL;
-		arm = NULL;
-		elevator = NULL;
-	}
+	pincer = new Pincer(pincerJaguar, rollerRelay, magPincerEncoder, operatorJoystick);
+	elevator = new Elevator(elevatorJaguarMotorA, elevatorBrakeServo, operatorJoystick);
+	arm = new Arm(armJaguar, operatorJoystick, magEncoder);
 	
 	navigation = new Navigation(encoders, gyro);
 	drive = new LNDrive(leftMotorJaguar, rightMotorJaguar, leftJoystick, rightJoystick, navigation, encoders, gyro);
@@ -125,12 +98,6 @@ Robot1073::Robot1073(void)
 	kraken = new KrakenDrive(this);
 	
 	SetTargetPoleAndFoot(targetPole, targetFoot);
-
-	// For now, Elot does not have cameras managed by the cRIO.  Current
-	// plan is to plug the camera directly into the radio, and use it from
-	// the laptop
-	if (IsSpareChassis)
-		cameraManager->StartCamera();
 	
 	// Launch the background thread....
 	InitializeTheZombieZone(this);
@@ -185,12 +152,11 @@ void Robot1073::DoPeriodicServiceFunctions()
 		if(IsOperatorControl())
 			drive->PeriodicService();	// Drive Only in tele mode..
 		
-		if(!IsSpareChassis)				// Call All of these periodic service functions..
-		{
-			elevator->PeriodicService();
-			arm->PeriodicService();  
-			pincer->PeriodicService();
-			kraken->PeriodicService();
+		
+		elevator->PeriodicService();
+		arm->PeriodicService();  
+		pincer->PeriodicService();
+		kraken->PeriodicService();
 #ifdef  _MSC_VER
 		// Simulation Hack!
 		drive->SimulationHack();
@@ -198,10 +164,6 @@ void Robot1073::DoPeriodicServiceFunctions()
 		fflush(stdout);
 		
 #endif
-
-		}
-
-
 }
 
 
@@ -240,15 +202,13 @@ void Robot1073::SetTargetPoleAndFoot(int polePos, int footPos)
 		}
 #endif
 	
-	if(!IsSpareChassis){ // Do the following only if we are Elot
-		elevator->UpdateTargetPoleAndFoot(targetPole, targetFoot);
-		kraken->UpdateTargetPole(targetPole);
-		kraken->UpdateTargetFoot(targetFoot);
-		navigation->StartPositionRobotToColumn(targetPole);
-		if(!navigation->GetHasStarted())
-			navigation->SetStartPosition();
-	}
-}
+	elevator->UpdateTargetPoleAndFoot(targetPole, targetFoot);
+	kraken->UpdateTargetPole(targetPole);
+	kraken->UpdateTargetFoot(targetFoot);
+	navigation->StartPositionRobotToColumn(targetPole);
+	if(!navigation->GetHasStarted())
+		navigation->SetStartPosition();
 
+}
 
 START_ROBOT_CLASS(Robot1073);

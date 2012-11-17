@@ -60,7 +60,6 @@ class Robot1073: public SimpleRobot
 		friend class KrakenDrive; 	   // Needs a ton of classes
 
 		
-		DigitalInput *isSpareChassisJumper; // Jumper to determine whether SW is executing on MainBot or Spare Chasis  
 		AxisCamera *camera;          
 		DriverStation *driverStation;
 		

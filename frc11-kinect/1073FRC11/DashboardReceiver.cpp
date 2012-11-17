@@ -126,16 +126,7 @@ Robot1073::ProcessDashboardData(char *rxRequest)
 				elevator->GoToPositionIndex(pegNumber);
 		}
 		break;
-	case 'M'://MOVE
-		{
-			int gettingDown;
-			gettingDown = atoi(strtok ( NULL , "\t")); //
-			if(gettingDown == 0) //stop mode
-				pRobot1073->kraken->SetGettingDown(false); // dont :(
-			else if(gettingDown == 1)
-				pRobot1073->kraken->SetGettingDown(true); //initiate dance sequence
-		}
-		break;
+
 	case 'O':
  		{
 			if(pRobot1073->kraken->GetMode() == pRobot1073->kraken->IdleMode)
@@ -147,21 +138,7 @@ Robot1073::ProcessDashboardData(char *rxRequest)
 				pRobot1073->kraken->SetAutoReleaseButton(false);
 			}
  		}
-	case 'P':
-		{
-			pRobot1073->shooter->ResetMinimum();
-			break;
-		}
-	case 'Q':
-		{
-			float fTSpeed = (float)atof(strtok( NULL ,"\t"));
-			float fBSpeed = (float)atof(strtok( NULL ,"\t"));
-			pRobot1073->shooter->SetTopMotorOutput(fTSpeed);
-			pRobot1073->shooter->SetBottomMotorOutput(fBSpeed);
-			printf("Top: %f, Bottom %f \n", fTSpeed, fBSpeed);
-			break;
-			
-		}
+
 	case 'R':
 		{
 			float xoff = (float)atof(strtok( NULL ,"\t"));
