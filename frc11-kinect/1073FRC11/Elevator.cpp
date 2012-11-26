@@ -44,7 +44,7 @@ Elevator::Elevator(SmartJaguarMotorEncoder *ma, Servo *s1, SmartJoystick *e)
 	timeoutTimer.Reset();
 	timeoutTimer.Start();
 	currentMotorValue = 0.0f;
-	elevatorIndex = 5;
+	elevatorIndex = 0;	//hardcode to drop
 	
 }
 

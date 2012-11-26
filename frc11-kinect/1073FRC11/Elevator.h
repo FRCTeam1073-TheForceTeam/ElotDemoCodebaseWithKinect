@@ -25,7 +25,8 @@ public:
 	
 	enum ControlMode { HomingMode, LocatingMode, ManualMode, BrakeOnMode, TimeOutMode };
 	enum BrakeState { On, Off, Idle };
-	
+	static const int bottom = 1;
+	static const int top = 6;
 	void GoToPositionFeet(float ft);
 	void GoToPositionIndex(int index);  // Go to positions 1 through 6
 	void GoToPositionIndex();  // Go to elevatorIndex
