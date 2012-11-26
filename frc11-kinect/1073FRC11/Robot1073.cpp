@@ -13,16 +13,9 @@ const float initialCameraServoPosition = .60f;
 Robot1073::Robot1073(void)
 : targetPole(2),targetFoot(3)
 {	
-	std::cout <<"\n\n\n";
-	for(int i = 0; i < 50; i++) std::cout<< "==";
-	std::cout << "Welcome to Elot's Demo Mode!\n\n";
-	std::cout <<"\tThis version of the code is lightwieght and optimized for "
-			<< "heavy use in non-competitive environments. It gives users:\n"
-			<< "\t>A Complete teleoperated mode\n"
-			<< "\t>Kinect Support with KinectGestureLib that is integrated into "
-			<< "the project's dashboard\n"
-			<< "\t>No autonomous to avoid crashes and confusion.\n\n";
-	
+	printf("\n\n\n");
+	for(int i = 0; i < 50; i++) printf("==");
+	printf("Welcome to demo mode\n\n");
 	
 	cameraManager = NULL;
 	camera = NULL;
@@ -127,6 +120,10 @@ void Robot1073::OperatorControl(void)
 	float final_gyro = gyro->GetAngle();
 	printf("Exiting OperatorControl() Gyro is %lf, difference %lf\n", final_gyro, final_gyro - initial_gyro );
 
+}
+
+std::string Robot1073::getDescriptionText(){
+	return ("Welcome to Elot's Demo Mode!\n\n\ntThis version of the code is lightwieght and optimized for Demos and heavy use in non-competitive environments. It gives users:\n\t>A Complete teleoperated mode\n\t>Kinect Support with KinectGestureLib that is integrated into the project's dashboard\n\t>No autonomous to avoid crashes and confusion.\n\n");
 }
 
 void Robot1073::DoPeriodicServiceFunctions()

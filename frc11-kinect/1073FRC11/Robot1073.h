@@ -52,6 +52,9 @@ class Robot1073: public SimpleRobot
 		
 				
 	private:
+		
+		std::string getDescriptionText();
+		
 		// The DashboardSender & DriverMessage classes are read-only functions that need to access a variety of
 		// our 'private' data so we'll make them 'friends' to make it much more convenient to access & use..
 		friend class DashboardSender;  // Friend #1 to send our telemetry to the dashboard
