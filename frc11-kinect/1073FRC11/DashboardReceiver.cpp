@@ -29,6 +29,14 @@ static int highFeet [3] = { 2, 4, 6};
 void
 Robot1073::ProcessDashboardData(char *rxRequest)
 {
+	
+	const char ELEVATOR_ON = (char) 0;
+	const char ELEVATOR_OFF = 'J';
+	const char ROLLER_ON = 'U';
+	const char ROLLER_OFF = '_';
+	const char ARM_UP = '<';
+	const char ARM_DOWN = '+';
+	
 	bool isOn;
 	char *startPos;
 	int x;
@@ -44,6 +52,9 @@ Robot1073::ProcessDashboardData(char *rxRequest)
 		return;
 	printf("Process Data %s", rxRequestCopy);
 	char dataType = strtok ( NULL , "\t")[0];
+	
+	std::cout << "Recieved Character... " << dataType << "\n";
+	
 	switch (dataType)
 	{
 	case 'A':
@@ -97,6 +108,24 @@ Robot1073::ProcessDashboardData(char *rxRequest)
 	
 		SetTargetPoleAndFoot(x, y);
 		
+		break;
+	case ELEVATOR_ON:
+			elevator->GoToPositionIndex(elevator->top);
+			break;
+	case ELEVATOR_OFF:
+			elevator->GoToPositionIndex(elevator->bottom);
+			break;
+	case ROLLER_ON:
+		pincer->RollIn();
+		break;
+	case ROLLER_OFF:
+		pincer->RollOff();
+		break;
+	case ARM_DOWN:
+		arm->GoToDownPosition();
+		break;
+	case ARM_UP:
+		arm->GoToUpPosition();
 		break;
 	case 'E':
 		isOn = true;
